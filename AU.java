@@ -16,10 +16,6 @@ public class AU{
         return averageClassSize;
     }
 
-    public double getAirQuality() {
-        return airQuality;
-    }
-
     public double getCampusSize() {
         return campusSize;
     }
