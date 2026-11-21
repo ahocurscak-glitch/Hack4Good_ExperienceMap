@@ -1,0 +1,10 @@
+public class WSU{
+    private String courses;
+    private int classSize;
+    private double airQuality;
+    private double campusSize;
+    private int totalStudents;
+    private double genderPerc;
+    private double racePerc;
+    private double lgbtqPerc;
+}
