@@ -1,9 +1,9 @@
 public class AU{
     private ArrayList<String> courses;
-    private int classSize;
+    private int averageClassSize = 18;
     private double airQuality;
-    private double campusSize;
-    private int totalStudents;
+    private double campusSize = 0.75; // in square kilometers
+    private int totalStudents = 2038;
     private ArrayList<Double> genderPerc;
     private ArrayList<Double> racePerc;
     private ArrayList<Double> lgbtqPerc;
