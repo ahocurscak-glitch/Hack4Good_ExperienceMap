@@ -1,7 +1,8 @@
-public class WSU{
+import java.util.*;
+
+public class AU{
     private ArrayList<String> courses;
     private int classSize;
-    private double airQuality;
     private double campusSize;
     private int totalStudents;
     private ArrayList<Double> genderPerc;
