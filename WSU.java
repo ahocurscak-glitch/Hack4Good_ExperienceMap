@@ -2,7 +2,6 @@ import java.util.*;
 public class WSU{
     private ArrayList<String> courses = CSVReader.ReadCSV("WSU CS courses.csv");
     private int averageClassSize = 21;
-    private double airQuality;
     private double campusSize = 0.235; // in square kilometers
     private int totalStudents = 5273;
     private ArrayList<Double> genderPerc;
@@ -15,10 +14,6 @@ public class WSU{
 
     public int getClassSize() {
         return averageClassSize;
-    }
-
-    public double getAirQuality() {
-        return airQuality;
     }
 
     public double getCampusSize() {

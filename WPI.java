@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class WPI {
-    private ArrayList<String> courses = CSVReader.ReadCSV("WPI_Courses.csv");
+    private ArrayList<String> courses = CSVReader.ReadCSV("WPICourses.csv");
     private int classSize = 25;
     private double campusSize = 0.38;
     private int totalStudents = 7177;
