@@ -2,7 +2,6 @@ import java.util.*;
 public class AU{
     private ArrayList<String> courses = CSVReader.ReadCSV("AU CS courses.csv");
     private int averageClassSize = 18;
-    private double airQuality;
     private double campusSize = 0.75; // in square kilometers
     private int totalStudents = 2038;
     private ArrayList<Double> genderPerc;
