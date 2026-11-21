@@ -1,39 +1,39 @@
 import java.util.*;
 
 public class WPI {
-    static ArrayList<String> courses = CSVReader.ReadCSV("WPI_Courses.csv");
-    static int classSize = 25;
-    static double campusSize = 0.38;
-    static int totalStudents = 7177;
-    static ArrayList<Double> genderPerc;
-    static ArrayList<Double> racePerc;
-    static ArrayList<Double> lgbtqPerc;
+    private ArrayList<String> courses = CSVReader.ReadCSV("WPI_Courses.csv");
+    private int classSize = 25;
+    private double campusSize = 0.38;
+    private int totalStudents = 7177;
+    private ArrayList<Double> genderPerc;
+    private ArrayList<Double> racePerc;
+    private ArrayList<Double> lgbtqPerc;
 
-    public static ArrayList<String> getCourses(){
+    public ArrayList<String> getCourses(){
         return courses;
     }
 
-    public static int getClassSize(){
+    public int getClassSize(){
         return classSize;
     }
 
-    public static double getCampusSize(){
+    public double getCampusSize(){
         return campusSize;
     }
 
-    public static int getTotalStudents(){
+    public int getTotalStudents(){
         return totalStudents;
     }
 
-    public static ArrayList<Double> getGenderPerc(){
+    public ArrayList<Double> getGenderPerc(){
         return genderPerc;
     }
 
-    public static ArrayList<Double> getRacePerc(){
+    public ArrayList<Double> getRacePerc(){
         return racePerc;
     }
 
-    public static ArrayList<Double> getLGBTQPerc(){
+    public ArrayList<Double> getLGBTQPerc(){
         return lgbtqPerc;
     }
 }
