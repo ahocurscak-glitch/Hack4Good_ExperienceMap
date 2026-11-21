@@ -1,5 +1,5 @@
 public class WSU{
-    private String courses;
+    private ArrayList<String> courses;
     private int classSize;
     private double airQuality;
     private double campusSize;
