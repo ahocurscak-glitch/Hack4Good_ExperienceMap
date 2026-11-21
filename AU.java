@@ -9,9 +9,35 @@ public class AU{
     private ArrayList<Double> racePerc;
     private ArrayList<Double> lgbtqPerc;
     
-    public static void main(String[] args){
-        for (String obj : courses){
-            System.out.println(obj);
-        }
+    public ArrayList<String> getCourses() {
+        return courses;
+    }
+
+    public int getClassSize() {
+        return averageClassSize;
+    }
+
+    public double getAirQuality() {
+        return airQuality;
+    }
+
+    public double getCampusSize() {
+        return campusSize;
+    }
+
+    public int getTotalStudents() {
+        return totalStudents;
+    }
+
+    public ArrayList<Double> getGenderPerc() {
+        return genderPerc;
+    }
+
+    public ArrayList<Double> getRacePerc() {
+        return racePerc;
+    }
+
+    public ArrayList<Double> getLgbtqPerc() {
+        return lgbtqPerc;
     }
 }
