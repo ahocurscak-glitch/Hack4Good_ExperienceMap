@@ -4,7 +4,7 @@ public class WSU{
     private double airQuality;
     private double campusSize;
     private int totalStudents;
-    private double genderPerc;
-    private double racePerc;
-    private double lgbtqPerc;
+    private ArrayList<Double> genderPerc;
+    private ArrayList<Double> racePerc;
+    private ArrayList<Double> lgbtqPerc;
 }
