@@ -8,6 +8,7 @@ public class HolyCross {
     private ArrayList<Double> genderPerc;
     private ArrayList<Double> racePerc;
     private ArrayList<Double> lgbtqPerc;
+    private ArrayList<Double> commuterPerc;
 
     public ArrayList<String> getCourses(){
         return courses;
@@ -35,5 +36,9 @@ public class HolyCross {
 
     public ArrayList<Double> getLGBTQPerc(){
         return lgbtqPerc;
+    }
+
+    public ArrayList<Double> getCommuterPerc() {
+        return commuterPerc;
     }
 }
