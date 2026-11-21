@@ -7,6 +7,7 @@ public class AU{
     private ArrayList<Double> genderPerc;
     private ArrayList<Double> racePerc;
     private ArrayList<Double> lgbtqPerc;
+    private ArrayList<Double> commuterPerc;
     
     public ArrayList<String> getCourses() {
         return courses;
@@ -34,5 +35,9 @@ public class AU{
 
     public ArrayList<Double> getLgbtqPerc() {
         return lgbtqPerc;
+    }
+
+    public ArrayList<Double> getCommuterPerc() {
+        return commuterPerc;
     }
 }
