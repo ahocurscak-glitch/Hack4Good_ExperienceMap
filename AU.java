@@ -4,10 +4,10 @@ public class AU{
     private int averageClassSize = 18;
     private double campusSize = 0.75; // in square kilometers
     private int totalStudents = 2038;
-    private ArrayList<Double> genderPerc;
-    private ArrayList<Double> racePerc;
-    private ArrayList<Double> lgbtqPerc;
-    private ArrayList<Double> commuterPerc;
+    private ArrayList<String> genderPerc = new ArrayList<>(Arrays.asList("Female: 55.7%", "Male: 44.3%"));
+    private ArrayList<String> racePerc = new ArrayList<>(Arrays.asList("White: 72.0%", "Latinx: 11.4%", "Black: 6.0%", "Multi-ethnic: 3.6", "International: 2.7%", "Asian: 2.7%", "Unknown: 1.6%", "Native Hawiian / Pacific Islander: 0.1%"));
+    private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
+    private ArrayList<String> commuterPerc = new ArrayList<>(Arrays.asList("Resident: 83%", "Commuter: 17%"));
     
     public ArrayList<String> getCourses() {
         return courses;
@@ -25,19 +25,19 @@ public class AU{
         return totalStudents;
     }
 
-    public ArrayList<Double> getGenderPerc() {
+    public ArrayList<String> getGenderPerc() {
         return genderPerc;
     }
 
-    public ArrayList<Double> getRacePerc() {
+    public ArrayList<String> getRacePerc() {
         return racePerc;
     }
 
-    public ArrayList<Double> getLgbtqPerc() {
+    public ArrayList<String> getLgbtqPerc() {
         return lgbtqPerc;
     }
 
-    public ArrayList<Double> getCommuterPerc() {
+    public ArrayList<String> getCommuterPerc() {
         return commuterPerc;
     }
 }
