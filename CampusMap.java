@@ -81,7 +81,7 @@ public class CampusMap {
         list.add(new Campus("MCPHS University", "MCPHS", new Color(220, 40, 130),
                 new double[]{1090, 600, 1110, 560, 1150, 545, 1190, 560, 1180, 620, 1160, 655, 1110, 625},
                 new double[]{1175, 558, 1466, 638}));
-        list.add(new Campus("Nichols College", "Nichols", new Color(30, 160, 110),
+        list.add(new Campus("Nichols College", "NC", new Color(30, 160, 110),
                 new double[]{1290, 885, 1340, 850, 1375, 850, 1425, 915, 1400, 945, 1355, 965, 1315, 930},
                 new double[]{1365, 850, 1524, 913}));
         return list;
@@ -237,10 +237,11 @@ public class CampusMap {
             LABELS.put("classsize", "Average Class Size");
             LABELS.put("campussize", "Campus Size");
             LABELS.put("airquality", "Air Quality");
-            LABELS.put("genderperc", "Gender Breakdown (%)");
-            LABELS.put("raceperc", "Race / Ethnicity Breakdown (%)");
-            LABELS.put("lgbtqperc", "LGBTQ+ Students (%)");
-            LABELS.put("courses", "Computer Science Courses");
+            LABELS.put("commuterperc", "Residents vs. Commuters");
+            LABELS.put("genderperc", "Gender");
+            LABELS.put("raceperc", "Race / Ethnicity");
+            LABELS.put("lgbtqperc", "LGBTQ+ Students");
+            LABELS.put("courses", "Computing Courses");
         }
 
         static String toHtml(Campus campus) {
@@ -306,10 +307,23 @@ public class CampusMap {
                 List<String> items = new ArrayList<>();
                 for (Object o : c) if (o != null && !o.toString().isBlank()) items.add(o.toString().trim());
                 if (items.isEmpty()) return "<p style='color:#888; margin-top:0'><i>None listed yet</i></p>";
+                if (items.size() == 1 && isNotListed(items.get(0))) return notListed();
                 StringBuilder sb = new StringBuilder();
-                if (key.equals("courses")) sb.append("<p style='margin:0; color:#555'>").append(items.size()).append(" courses</p>");
+                boolean courses = key.equals("courses");
+                if (courses) sb.append("<p style='margin:0; color:#555'>").append(items.size()).append(" courses</p>");
                 sb.append("<ul style='margin-top:4px'>");
-                for (String s : items) sb.append("<li>").append(esc(s)).append("</li>");
+                for (String s : items) {
+                    sb.append("<li>");
+                    int colon = s.indexOf(':');
+                    if (!courses && colon > 0) {
+                        // "Female: 55.7%" -> bold category, plain value
+                        sb.append("<b>").append(esc(s.substring(0, colon))).append("</b>")
+                          .append(esc(s.substring(colon)));
+                    } else {
+                        sb.append(esc(s));
+                    }
+                    sb.append("</li>");
+                }
                 return sb.append("</ul>").toString();
             }
             if (value instanceof Number) {
@@ -319,7 +333,16 @@ public class CampusMap {
                 if (key.equals("campussize")) text += " km²";
                 return "<p style='margin-top:0; font-size:15pt'><b>" + text + "</b></p>";
             }
+            if (isNotListed(value.toString())) return notListed();
             return "<p style='margin-top:0'>" + esc(value.toString()) + "</p>";
+        }
+
+        private static boolean isNotListed(String s) {
+            return s.trim().equalsIgnoreCase("Not Listed");
+        }
+
+        private static String notListed() {
+            return "<p style='color:#888; margin-top:0'><i>Not listed</i></p>";
         }
 
         private static String splitCamel(String s) {
