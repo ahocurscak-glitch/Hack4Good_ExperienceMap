@@ -8,8 +8,6 @@ public class TuitionChart extends JPanel {
         "Worcester State", "Clark", "WPI",
         "MCPHS", "Holy Cross", "Assumption"
     };
-
-    // Temporary sample values — replace with your verified tuition data.
     private final double[] tuition = {
         10000, 55000, 60000, 39000, 62000, 49000
     };
