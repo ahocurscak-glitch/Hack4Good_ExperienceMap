@@ -14,4 +14,12 @@ public class CSVReader {
         }
         return list;
     }
+
+    public static String toList(ArrayList<String> list) {
+        String result = "";
+        for (String item : list) {
+            result += item + "\n";
+        }
+        return result;
+    }
 }
