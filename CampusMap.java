@@ -193,8 +193,12 @@ public class CampusMap {
 
         //for tuition chart display 
          private final JPanel chartPanel = new JPanel(new BorderLayout());
-    private final JButton chartButton = new JButton("Tuition Chart ▼");
-    private boolean chartVisible = false;
+        private final JButton chartButton = new JButton("Commuter Tuition Chart ▼");
+private boolean chartVisible = false;
+
+private final JButton residentChartButton =
+        new JButton("Resident Tuition Chart ▼");
+private boolean residentChartVisible = false;
 
         DetailsPage(Runnable onBack) {
             setLayout(new BorderLayout());
@@ -221,18 +225,51 @@ public class CampusMap {
 contentPanel.add(scroll);
 
 JPanel rightPanel = new JPanel(new BorderLayout());
-chartPanel.add(new TuitionChart(), BorderLayout.CENTER);
-rightPanel.add(chartButton, BorderLayout.NORTH);
-//temporary solution to add chart to right panel, will need to be updated when more data is added
+
+JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+
 chartButton.setBackground(Color.YELLOW);
-rightPanel.add(chartPanel, BorderLayout.CENTER);
+residentChartButton.setBackground(Color.CYAN);
+
+buttonPanel.add(chartButton);
+buttonPanel.add(residentChartButton);
+
+rightPanel.add(buttonPanel, BorderLayout.NORTH);
+
+// Add both charts
+JPanel chartsPanel = new JPanel(new GridLayout(1, 1));
+
+chartPanel.add(new TuitionChart(), BorderLayout.CENTER);
+
+JPanel residentChartPanel = new JPanel(new BorderLayout());
+residentChartPanel.add(new residentTuitionChart(), BorderLayout.CENTER);
+
+chartsPanel.add(chartPanel);
+chartsPanel.add(residentChartPanel);
 
 chartPanel.setVisible(false);
+residentChartPanel.setVisible(false);
+
+rightPanel.add(chartsPanel, BorderLayout.CENTER);
 
 chartButton.addActionListener(e -> {
     chartVisible = !chartVisible;
     chartPanel.setVisible(chartVisible);
-    chartButton.setText(chartVisible ? "Tuition Chart ▲" : "Tuition Chart ▼");
+    residentChartPanel.setVisible(false);
+    residentChartVisible = false;
+
+    chartButton.setText(chartVisible ? "Commuter Tuition Chart ▲" : "Commuter Tuition Chart ▼");
+    residentChartButton.setText("Resident Tuition Chart ▼");
+});
+
+residentChartButton.addActionListener(e -> {
+    residentChartVisible = !residentChartVisible;
+    residentChartPanel.setVisible(residentChartVisible);
+    chartPanel.setVisible(false);
+    chartVisible = false;
+
+    residentChartButton.setText(residentChartVisible ? "Resident Tuition Chart ▲" : "Resident Tuition Chart ▼");
+    chartButton.setText("Commuter Tuition Chart ▼");
 });
 
 contentPanel.add(rightPanel);
