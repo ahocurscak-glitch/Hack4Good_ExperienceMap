@@ -1,2 +1,2 @@
 Run CampusMap.java to see the program!
-Heads up: CampusMap.java was written with assistance from Claude Code. All other files were written by humans.
+Heads up: Claude Code assisted in writing CampusMap.java, and ChatGPT assisted in writing TuitionChart.java. Humans wrote all other files.
