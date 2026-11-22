@@ -193,8 +193,12 @@ public class CampusMap {
 
         //for tuition chart display 
          private final JPanel chartPanel = new JPanel(new BorderLayout());
-    private final JButton chartButton = new JButton("Tuition Chart ▼");
-    private boolean chartVisible = false;
+        private final JButton chartButton = new JButton("Commuter Tuition Chart ▼");
+private boolean chartVisible = false;
+
+private final JButton residentChartButton =
+        new JButton("Resident Tuition Chart ▼");
+private boolean residentChartVisible = false;
 
         DetailsPage(Runnable onBack) {
             setLayout(new BorderLayout());
@@ -221,18 +225,65 @@ public class CampusMap {
 contentPanel.add(scroll);
 
 JPanel rightPanel = new JPanel(new BorderLayout());
-chartPanel.add(new TuitionChart(), BorderLayout.CENTER);
-rightPanel.add(chartButton, BorderLayout.NORTH);
-//temporary solution to add chart to right panel, will need to be updated when more data is added
+
+JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+
 chartButton.setBackground(Color.YELLOW);
-rightPanel.add(chartPanel, BorderLayout.CENTER);
+residentChartButton.setBackground(Color.CYAN);
 
-chartPanel.setVisible(false);
+buttonPanel.add(chartButton);
+buttonPanel.add(residentChartButton);
 
+rightPanel.add(buttonPanel, BorderLayout.NORTH);
+
+// Add both charts
+JPanel chartsPanel = new JPanel(new CardLayout());
+
+chartPanel.add(new TuitionChart(), BorderLayout.CENTER);
+
+JPanel residentChartPanel = new JPanel(new BorderLayout());
+residentChartPanel.add(new residentTuitionChart(), BorderLayout.CENTER);
+
+CardLayout chartLayout = (CardLayout) chartsPanel.getLayout();
+
+chartsPanel.add(chartPanel, "commuter");
+chartsPanel.add(residentChartPanel, "resident");
+
+chartsPanel.setVisible(false); // Hide charts when the page first opens
+
+rightPanel.add(chartsPanel, BorderLayout.CENTER);
 chartButton.addActionListener(e -> {
     chartVisible = !chartVisible;
-    chartPanel.setVisible(chartVisible);
-    chartButton.setText(chartVisible ? "Tuition Chart ▲" : "Tuition Chart ▼");
+    residentChartVisible = false;
+
+    if (chartVisible) {
+        chartLayout.show(chartsPanel, "commuter");
+    }
+
+    chartsPanel.setVisible(chartVisible);
+
+    chartButton.setText(chartVisible
+            ? "Commuter Tuition Chart ▲"
+            : "Commuter Tuition Chart ▼");
+
+    residentChartButton.setText("Resident Tuition Chart ▼");
+});
+
+residentChartButton.addActionListener(e -> {
+    residentChartVisible = !residentChartVisible;
+    chartVisible = false;
+
+    if (residentChartVisible) {
+        chartLayout.show(chartsPanel, "resident");
+    }
+
+    chartsPanel.setVisible(residentChartVisible);
+
+    residentChartButton.setText(residentChartVisible
+            ? "Resident Tuition Chart ▲"
+            : "Resident Tuition Chart ▼");
+
+    chartButton.setText("Commuter Tuition Chart ▼");
 });
 
 contentPanel.add(rightPanel);
@@ -324,55 +375,93 @@ add(contentPanel, BorderLayout.CENTER);
         }
 
         private static String formatValue(String key, Object value) {
-            String na = "<p style='color:#888; margin-top:0'><i>Not available yet</i></p>";
-            if (value == null) return na;
-            if (key.equals("majors") && value instanceof Map) {
-                Map<String, ArrayList<String>> majors = (Map<String, ArrayList<String>>) value;
-                StringBuilder sb = new StringBuilder();
-                for (String major : majors.keySet()) {
-                    ArrayList<String> courses = majors.get(major);
-                    String courseList = CSVReader.toList(courses);
-                    sb.append("<h4>").append(esc(major)).append("</h4>");
-                    sb.append("<pre style='font-family:SansSerif'>");
-                    sb.append(esc(courseList));
-                    sb.append("</pre>");
-            }
-            return sb.toString();
-    }
-            if (value instanceof Collection) {
-                Collection<?> c = (Collection<?>) value;
-                List<String> items = new ArrayList<>();
-                for (Object o : c) if (o != null && !o.toString().isBlank()) items.add(o.toString().trim());
-                if (items.isEmpty()) return "<p style='color:#888; margin-top:0'><i>None listed yet</i></p>";
-                if (items.size() == 1 && isNotListed(items.get(0))) return notListed();
-                StringBuilder sb = new StringBuilder();
-                boolean courses = key.equals("courses");
-                if (courses) sb.append("<p style='margin:0; color:#555'>").append(items.size()).append(" courses</p>");
-                sb.append("<ul style='margin-top:4px'>");
-                for (String s : items) {
-                    sb.append("<li>");
-                    int colon = s.indexOf(':');
-                    if (!courses && colon > 0) {
-                        // "Female: 55.7%" -> bold category, plain value
-                        sb.append("<b>").append(esc(s.substring(0, colon))).append("</b>")
-                          .append(esc(s.substring(colon)));
-                    } else {
-                        sb.append(esc(s));
-                    }
-                    sb.append("</li>");
-                }
-                return sb.append("</ul>").toString();
-            }
-            if (value instanceof Number) {
-                double d = ((Number) value).doubleValue();
-                if (d == 0) return na;  // unset primitive fields default to 0
-                String text = d == Math.rint(d) ? String.format("%,d", (long) d) : String.valueOf(d);
-                if (key.equals("campussize")) text += " km²";
-                return "<p style='margin-top:0; font-size:15pt'><b>" + text + "</b></p>";
-            }
-            if (isNotListed(value.toString())) return notListed();
-            return "<p style='margin-top:0'>" + esc(value.toString()) + "</p>";
+    String na = "<p style='color:#888; margin-top:0'><i>Not available yet</i></p>";
+
+    if (value == null) return na;
+
+    if (key.equals("majors") && value instanceof Map) {
+        Map<String, ArrayList<String>> majors =
+                (Map<String, ArrayList<String>>) value;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String major : majors.keySet()) {
+            ArrayList<String> courses = majors.get(major);
+            String courseList = CSVReader.toList(courses);
+
+            sb.append("<h4>").append(esc(major)).append("</h4>");
+            sb.append("<pre style='font-family:SansSerif'>");
+            sb.append(esc(courseList));
+            sb.append("</pre>");
         }
+
+        return sb.toString();
+    }
+
+    if (value instanceof Collection) {
+        Collection<?> c = (Collection<?>) value;
+        List<String> items = new ArrayList<>();
+
+        for (Object o : c) {
+            if (o != null && !o.toString().isBlank()) {
+                items.add(o.toString().trim());
+            }
+        }
+
+        if (items.isEmpty()) {
+            return "<p style='color:#888; margin-top:0'><i>None listed yet</i></p>";
+        }
+
+        if (items.size() == 1 && isNotListed(items.get(0))) {
+            return notListed();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        boolean courses = key.equals("courses");
+
+        if (courses) {
+            sb.append("<p style='margin:0; color:#555'>")
+              .append(items.size()).append(" courses</p>");
+        }
+
+        sb.append("<ul style='margin-top:4px'>");
+
+        for (String s : items) {
+            sb.append("<li>");
+            int colon = s.indexOf(':');
+
+            if (!courses && colon > 0) {
+                sb.append("<b>").append(esc(s.substring(0, colon)))
+                  .append("</b>").append(esc(s.substring(colon)));
+            } else {
+                sb.append(esc(s));
+            }
+
+            sb.append("</li>");
+        }
+
+        return sb.append("</ul>").toString();
+    }
+
+    if (value instanceof Number) {
+        double d = ((Number) value).doubleValue();
+
+        if (d == 0) return na;
+
+        String text = d == Math.rint(d)
+                ? String.format("%,d", (long) d)
+                : String.valueOf(d);
+
+        if (key.equals("campussize")) text += " km²";
+
+        return "<p style='margin-top:0; font-size:15pt'><b>"
+                + text + "</b></p>";
+    }
+
+    if (isNotListed(value.toString())) return notListed();
+
+    return "<p style='margin-top:0'>" + esc(value.toString()) + "</p>";
+}
 
         private static boolean isNotListed(String s) {
             return s.trim().equalsIgnoreCase("Not Listed");
