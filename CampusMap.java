@@ -81,7 +81,7 @@ public class CampusMap {
         list.add(new Campus("MCPHS University", "MCPHS", new Color(220, 40, 130),
                 new double[]{1090, 600, 1110, 560, 1150, 545, 1190, 560, 1180, 620, 1160, 655, 1110, 625},
                 new double[]{1175, 558, 1466, 638}));
-        list.add(new Campus("Nichols College", "Nichols", new Color(30, 160, 110),
+        list.add(new Campus("Nichols College", "NC", new Color(30, 160, 110),
                 new double[]{1290, 885, 1340, 850, 1375, 850, 1425, 915, 1400, 945, 1355, 965, 1315, 930},
                 new double[]{1365, 850, 1524, 913}));
         return list;
