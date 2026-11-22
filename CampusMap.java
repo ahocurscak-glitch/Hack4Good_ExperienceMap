@@ -1,6 +1,3 @@
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,6 +10,9 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Interactive Worcester colleges campus map.
@@ -191,6 +191,11 @@ public class CampusMap {
         private final JEditorPane body = new JEditorPane("text/html", "");
         private final JScrollPane scroll;
 
+        //for tuition chart display 
+         private final JPanel chartPanel = new JPanel(new BorderLayout());
+    private final JButton chartButton = new JButton("Tuition Chart ▼");
+    private boolean chartVisible = false;
+
         DetailsPage(Runnable onBack) {
             setLayout(new BorderLayout());
 
@@ -212,7 +217,26 @@ public class CampusMap {
             scroll.getVerticalScrollBar().setUnitIncrement(16);
 
             add(header, BorderLayout.NORTH);
-            add(scroll, BorderLayout.CENTER);
+            JPanel contentPanel = new JPanel(new GridLayout(1, 2, 15, 0));
+contentPanel.add(scroll);
+
+JPanel rightPanel = new JPanel(new BorderLayout());
+chartPanel.add(new TuitionChart(), BorderLayout.CENTER);
+rightPanel.add(chartButton, BorderLayout.NORTH);
+//temporary solution to add chart to right panel, will need to be updated when more data is added
+chartButton.setBackground(Color.YELLOW);
+rightPanel.add(chartPanel, BorderLayout.CENTER);
+
+chartPanel.setVisible(false);
+
+chartButton.addActionListener(e -> {
+    chartVisible = !chartVisible;
+    chartPanel.setVisible(chartVisible);
+    chartButton.setText(chartVisible ? "Tuition Chart ▲" : "Tuition Chart ▼");
+});
+
+contentPanel.add(rightPanel);
+add(contentPanel, BorderLayout.CENTER);
         }
 
         void show(Campus campus) {
