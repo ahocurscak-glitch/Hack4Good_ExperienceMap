@@ -12,6 +12,8 @@ public class MCPHS{
     
    public MCPHS(){
         majors.put("Computer Science", CSVReader.ReadCSV("MCPHSDataCourses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("MCPHS Business.csv"));
+
     }
 
     public Map<String, ArrayList<String>> getMajors() {

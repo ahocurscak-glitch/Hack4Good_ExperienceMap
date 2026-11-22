@@ -16,6 +16,8 @@ public class QCC {
 
     public QCC(){
         majors.put("Computer Science", CSVReader.ReadCSV("QCCCSCourses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("QCC Business.csv"));
+
     }
 
     public Map<String, ArrayList<String>> getMajors() {

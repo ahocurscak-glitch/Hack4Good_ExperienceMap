@@ -16,6 +16,8 @@ public class HolyCross {
 
    public HolyCross(){
         majors.put("Computer Science", CSVReader.ReadCSV("HolyCrossCSCourses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("HolyCross Business Courses.csv"));
+
     }
 
     public Map<String, ArrayList<String>> getMajors() {

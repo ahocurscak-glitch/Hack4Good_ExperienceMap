@@ -12,6 +12,7 @@ public class WSU{
 
     public WSU(){
         majors.put("Computer Science", CSVReader.ReadCSV("WSU CS courses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("WSU Business Courses.csv"));
     }
 
     public Map<String, ArrayList<String>> getMajors() {

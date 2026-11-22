@@ -12,6 +12,8 @@ public class AU{
     
    public AU(){
         majors.put("Computer Science", CSVReader.ReadCSV("AU CS Courses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("AU Business Courses.csv"));
+
     }
 
     public Map<String, ArrayList<String>> getMajors() {

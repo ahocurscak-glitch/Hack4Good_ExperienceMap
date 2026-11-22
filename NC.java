@@ -12,6 +12,8 @@ public class NC {
     
     public NC(){
         majors.put("Computer Science", CSVReader.ReadCSV("NC CS Courses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("NC Business Courses.csv"));
+
     }
 
     public Map<String, ArrayList<String>> getMajors() {

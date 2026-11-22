@@ -12,6 +12,7 @@ public class Clark{
     
    public Clark(){
         majors.put("Computer Science", CSVReader.ReadCSV("Clark CS Courses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("Clark Business Courses.csv"));
     }
 
     public Map<String, ArrayList<String>> getMajors() {
