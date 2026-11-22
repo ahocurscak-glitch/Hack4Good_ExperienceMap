@@ -237,7 +237,6 @@ public class CampusMap {
             LABELS.put("classsize", "Average Class Size");
             LABELS.put("campussize", "Campus Size");
             LABELS.put("airquality", "Air Quality");
-            LABELS.put("cost", "Cost of Attendance (per year)");
             LABELS.put("commuterperc", "Residents vs. Commuters");
             LABELS.put("genderperc", "Gender");
             LABELS.put("raceperc", "Race / Ethnicity");
@@ -303,6 +302,19 @@ public class CampusMap {
         private static String formatValue(String key, Object value) {
             String na = "<p style='color:#888; margin-top:0'><i>Not available yet</i></p>";
             if (value == null) return na;
+            if (key.equals("majors") && value instanceof Map) {
+                Map<String, ArrayList<String>> majors = (Map<String, ArrayList<String>>) value;
+                StringBuilder sb = new StringBuilder();
+                for (String major : majors.keySet()) {
+                    ArrayList<String> courses = majors.get(major);
+                    String courseList = CSVReader.toList(courses);
+                    sb.append("<h4>").append(esc(major)).append("</h4>");
+                    sb.append("<pre style='font-family:SansSerif'>");
+                    sb.append(esc(courseList));
+                    sb.append("</pre>");
+            }
+            return sb.toString();
+    }
             if (value instanceof Collection) {
                 Collection<?> c = (Collection<?>) value;
                 List<String> items = new ArrayList<>();
