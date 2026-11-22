@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class WPI {
-    private ArrayList<String> courses = CSVReader.ReadCSV("WPICourses.csv");
+    private LinkedHashMap <String, ArrayList<String>> majors = new LinkedHashMap<>();
     private int classSize = 25;
     private double campusSize = 0.38;
     private int totalStudents = 7177;
@@ -11,8 +11,12 @@ public class WPI {
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
     private ArrayList<String> commuterPerc = new ArrayList<>(Arrays.asList("Commuter: 56%", "Resident: 44%"));
 
-    public ArrayList<String> getCourses(){
-        return courses;
+    public WPI(){
+        majors.put("Computer Science", CSVReader.ReadCSV("WPICourses.csv"));
+    }
+
+    public Map<String, ArrayList<String>> getMajors() {
+        return majors;
     }
 
     public int getClassSize(){

@@ -1,6 +1,6 @@
 import java.util.*;
 public class Clark{
-    private ArrayList<String> courses = CSVReader.ReadCSV("Clark CS courses.csv");
+    private LinkedHashMap <String, ArrayList<String>> majors = new LinkedHashMap<>();
     private int averageClassSize = 18;
     private double campusSize = 0.29; // in square kilometers (72 acres)
     private int totalStudents = 3700;
@@ -10,8 +10,12 @@ public class Clark{
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
     private ArrayList<String> commuterPerc = new ArrayList<>(Arrays.asList("Resident: 68%", "Commuter: 32%"));
     
-    public ArrayList<String> getCourses() {
-        return courses;
+   public Clark(){
+        majors.put("Computer Science", CSVReader.ReadCSV("Clark CS Courses.csv"));
+    }
+
+    public Map<String, ArrayList<String>> getMajors() {
+        return majors;
     }
 
     public int getClassSize() {

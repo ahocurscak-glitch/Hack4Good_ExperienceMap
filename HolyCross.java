@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class HolyCross {
-    private ArrayList<String> courses = CSVReader.ReadCSV("HolyCrossCSCourses.csv");
+    private LinkedHashMap <String, ArrayList<String>> majors = new LinkedHashMap<>();
     private int classSize = 18;
     private double campusSize = 0.7;
     private int totalStudents = 3106;
@@ -12,8 +14,12 @@ public class HolyCross {
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
     private ArrayList<String> commuterPerc = new ArrayList<>(Arrays.asList("Resident: 87%", "Commuter: 13%"));
 
-    public ArrayList<String> getCourses(){
-        return courses;
+   public HolyCross(){
+        majors.put("Computer Science", CSVReader.ReadCSV("HolyCrossCSCourses.csv"));
+    }
+
+    public Map<String, ArrayList<String>> getMajors() {
+        return majors;
     }
 
     public int getClassSize(){

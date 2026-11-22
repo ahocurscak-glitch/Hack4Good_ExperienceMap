@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class QCC {
-    private ArrayList<String> courses = CSVReader.ReadCSV("QCCCSCourses.csv");
+    private LinkedHashMap <String, ArrayList<String>> majors = new LinkedHashMap<>();
     private int classSize = 17;
     private double campusSize = 0.23;
     private int totalStudents = 8715;
@@ -12,8 +14,12 @@ public class QCC {
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
     private ArrayList<String> commuterPerc = new ArrayList<>(Arrays.asList("Commuter: 100%"));
 
-    public ArrayList<String> getCourses(){
-        return courses;
+    public QCC(){
+        majors.put("Computer Science", CSVReader.ReadCSV("QCCCSCourses.csv"));
+    }
+
+    public Map<String, ArrayList<String>> getMajors() {
+        return majors;
     }
 
     public int getClassSize(){
