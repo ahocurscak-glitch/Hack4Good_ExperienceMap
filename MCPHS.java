@@ -1,6 +1,6 @@
 import java.util.*;
 public class MCPHS{
-    private ArrayList<String> courses = CSVReader.ReadCSV("MCPHS CS courses.csv");
+    private ArrayList<String> courses = CSVReader.ReadCSV("MCPHS CS MCPHSDataCourses.csv");
     private int averageClassSize = 22;
     private double campusSize = 0.036; // in square kilometers
     private int totalStudents = 5945;
