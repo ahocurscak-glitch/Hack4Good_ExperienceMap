@@ -5,6 +5,7 @@ public class WPI {
     private int classSize = 25;
     private double campusSize = 0.38;
     private int totalStudents = 7177;
+    private ArrayList<String> CoA = new ArrayList<>(Arrays.asList("Resident: $87,570", "Commuter: $78,358"));
     private ArrayList<String> genderPerc = new ArrayList<>(Arrays.asList("Male: 71%", "Female: 29%"));
     private ArrayList<String> racePerc = new ArrayList<>(Arrays.asList("White: 57.8%", "International: 15.2%", "Asian: 11.2%", "Latinx: 7.5%", "Multi-ethnic: 3.2%", "Black: 2.6%", "Unknown: 2.5%", "Native Hawiian / Pacific Islander: near 0"));
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
@@ -24,6 +25,10 @@ public class WPI {
 
     public int getTotalStudents(){
         return totalStudents;
+    }
+
+    public ArrayList<String> getCost() {
+        return CoA;
     }
 
     public ArrayList<String> getGenderPerc(){

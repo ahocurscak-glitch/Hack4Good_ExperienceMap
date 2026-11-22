@@ -4,6 +4,7 @@ public class MCPHS{
     private int averageClassSize = 22;
     private double campusSize = 0.036; // in square kilometers
     private int totalStudents = 5945;
+    private ArrayList<String> CoA = new ArrayList<>(Arrays.asList("Resident: $75,100-$86,840", "Commuter: $56,370-$68,100"));
     private ArrayList<String> genderPerc = new ArrayList<>(Arrays.asList("Female: 76.5%", "Male: 22.5%", "Unknown: 0.9%"));
     private ArrayList<String> racePerc = new ArrayList<>(Arrays.asList("White: 35.4%", "Latinx: 12.1%", "Black: 12.8%", "Multi-ethnic: 1.6%", "International: 14.6%", "Asian: 18.2%", "Unknown: 7.4%", "Native Hawiian / Pacific Islander: 0.02%"));
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
@@ -23,6 +24,10 @@ public class MCPHS{
 
     public int getTotalStudents() {
         return totalStudents;
+    }
+
+    public ArrayList<String> getCost() {
+        return CoA;
     }
 
     public ArrayList<String> getGenderPerc() {

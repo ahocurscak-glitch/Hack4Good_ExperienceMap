@@ -237,6 +237,7 @@ public class CampusMap {
             LABELS.put("classsize", "Average Class Size");
             LABELS.put("campussize", "Campus Size");
             LABELS.put("airquality", "Air Quality");
+            LABELS.put("cost", "Cost of Attendance (per year)");
             LABELS.put("commuterperc", "Residents vs. Commuters");
             LABELS.put("genderperc", "Gender");
             LABELS.put("raceperc", "Race / Ethnicity");

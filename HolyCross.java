@@ -6,6 +6,7 @@ public class HolyCross {
     private int classSize = 18;
     private double campusSize = 0.7;
     private int totalStudents = 3106;
+    private ArrayList<String> CoA = new ArrayList<>(Arrays.asList("Resident: $91,740", "Commuter: $71,150"));
     private ArrayList<String> genderPerc = new ArrayList<>(Arrays.asList("Female: 56%", "Male: 44%"));
     private ArrayList<String> racePerc = new ArrayList<>(Arrays.asList("White: 71%", "Latinx: 14%", "Black: 5%", "Multi-ethnic: 4%", "International: 3%", "Asian: 3%", "American Indian / Alaska Native & Native Hawaiian / Pacific Islander: <1%"));
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
@@ -25,6 +26,10 @@ public class HolyCross {
 
     public int getTotalStudents(){
         return totalStudents;
+    }
+
+    public ArrayList<String> getCost() {
+        return CoA;
     }
 
     public ArrayList<String> getGenderPerc(){

@@ -4,6 +4,7 @@ public class NC {
     private String averageClassSize = "Not Listed";
     private double campusSize = 0.81; // in square kilometers
     private int totalStudents = 1313;
+    private ArrayList<String> CoA = new ArrayList<>(Arrays.asList("Resident: $67,726", "Commuter: $60,070"));
     private ArrayList<String> genderPerc = new ArrayList<>(Arrays.asList("Female: 34.7%", "Male: 65.3%"));
     private ArrayList<String> racePerc = new ArrayList<>(Arrays.asList("White: 69.0%", "Latinx: 12.0%", "Black: 7.0%", "Asian: 2.0%", "Multi-ethnic: 4.0%", "Unknown: 2.3%", "International: 4%", "Native Hawiian / Pacific Islander: <1.0%"));
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
@@ -23,6 +24,10 @@ public class NC {
 
     public int getTotalStudents() {
         return totalStudents;
+    }
+
+    public ArrayList<String> getCost() {
+        return CoA;
     }
 
     public ArrayList<String> getGenderPerc() {

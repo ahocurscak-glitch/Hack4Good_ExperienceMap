@@ -4,6 +4,7 @@ public class WSU{
     private int averageClassSize = 21;
     private double campusSize = 0.235; // in square kilometers
     private int totalStudents = 5273;
+    private ArrayList<String> CoA = new ArrayList<>(Arrays.asList("In state resident: $31,363", "In state commuter: $17,070", "Out of state resident: $37,443", "Out of state commuter: $23,150"));
     private ArrayList<String> genderPerc = new ArrayList<>(Arrays.asList("Female: 61.5%", "Male: 38.5%"));
     private ArrayList<String> racePerc = new ArrayList<>(Arrays.asList("White: 62.4%", "Latinx: 16.7%", "Black: 8.5%", "Asian: 5.3%", "Multi-ethnic: 3.0%", "Unknown: 2.3%", "International: 1.9%", "Native Hawiian / Pacific Islander: <0.1%"));
     private ArrayList<String> lgbtqPerc = new ArrayList<>(Arrays.asList("Not Listed"));
@@ -23,6 +24,10 @@ public class WSU{
 
     public int getTotalStudents() {
         return totalStudents;
+    }
+
+    public ArrayList<String> getCost() {
+        return CoA;
     }
 
     public ArrayList<String> getGenderPerc() {
