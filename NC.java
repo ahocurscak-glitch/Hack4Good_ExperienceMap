@@ -41,5 +41,3 @@ public class NC {
         return commuterPerc;
     }
 }
-
-}
