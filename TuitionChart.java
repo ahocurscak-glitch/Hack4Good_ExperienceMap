@@ -30,7 +30,7 @@ public class TuitionChart extends JPanel {
         );
 
         g2.setFont(new Font("Arial", Font.BOLD, 22));
-        g2.drawString("Annual College Tuition", 280, 40);
+        g2.drawString("Annual Commuter Tuition", 280, 40);
 
         int chartBottom = 400;
         int chartTop = 100;
