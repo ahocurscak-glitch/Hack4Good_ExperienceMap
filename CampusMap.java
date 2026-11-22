@@ -191,7 +191,17 @@ public class CampusMap {
         private final JEditorPane body = new JEditorPane("text/html", "");
         private final JScrollPane scroll;
 
-        //for tuition chart display 
+        // Courses dropdown: courses only appear after a major is picked.
+        // Majors come from each school's getMajors(), so new majors show up automatically.
+        private static final String PICK_MAJOR = "Select a major…";
+        private final JComboBox<String> majorBox = new JComboBox<>();
+        private final DefaultListModel<String> courseModel = new DefaultListModel<>();
+        private final JList<String> courseList = new JList<>(courseModel);
+        private final JScrollPane courseScroll = new JScrollPane(courseList);
+        private final JLabel courseCount = new JLabel();
+        private Map<String, List<String>> majors = new LinkedHashMap<>();
+
+        //for tuition chart display
          private final JPanel chartPanel = new JPanel(new BorderLayout());
         private final JButton chartButton = new JButton("Commuter Tuition Chart ▼");
 private boolean chartVisible = false;
@@ -221,8 +231,39 @@ private boolean residentChartVisible = false;
             scroll.getVerticalScrollBar().setUnitIncrement(16);
 
             add(header, BorderLayout.NORTH);
+
+            // Course picker sits above the stats; the list stays hidden until a major is chosen
+            JLabel pickLabel = new JLabel("Courses:");
+            pickLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
+            majorBox.setFont(new Font("SansSerif", Font.PLAIN, 14));
+            majorBox.addActionListener(e -> showCourses());
+            courseCount.setForeground(Color.GRAY);
+
+            JPanel pickRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+            pickRow.setOpaque(false);
+            pickRow.add(pickLabel);
+            pickRow.add(majorBox);
+            pickRow.add(courseCount);
+
+            courseList.setFont(new Font("SansSerif", Font.PLAIN, 13));
+            courseScroll.setPreferredSize(new Dimension(0, 220));
+            courseScroll.getVerticalScrollBar().setUnitIncrement(16);
+            courseScroll.setVisible(false);
+
+            JPanel coursePanel = new JPanel(new BorderLayout(0, 8));
+            coursePanel.setBackground(Color.WHITE);
+            coursePanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)),
+                    new EmptyBorder(12, 20, 12, 20)));
+            coursePanel.add(pickRow, BorderLayout.NORTH);
+            coursePanel.add(courseScroll, BorderLayout.CENTER);
+
+            JPanel leftPanel = new JPanel(new BorderLayout());
+            leftPanel.add(coursePanel, BorderLayout.NORTH);
+            leftPanel.add(scroll, BorderLayout.CENTER);
+
             JPanel contentPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-contentPanel.add(scroll);
+contentPanel.add(leftPanel);
 
 JPanel rightPanel = new JPanel(new BorderLayout());
 
@@ -293,9 +334,39 @@ add(contentPanel, BorderLayout.CENTER);
         void show(Campus campus) {
             header.setBackground(campus.color.darker());
             title.setText(campus.name);
-            body.setText(UniversityData.toHtml(campus));
+            Object data = UniversityData.load(campus.className);
+            body.setText(UniversityData.toHtml(campus, data));
             SwingUtilities.invokeLater(() -> scroll.getVerticalScrollBar().setValue(0));
             body.setCaretPosition(0);
+
+            // Fill the dropdown with this school's majors, starting on "Select a major…"
+            majors = UniversityData.majors(data);
+            Vector<String> items = new Vector<>();
+            items.add(PICK_MAJOR);
+            items.addAll(majors.keySet());
+            majorBox.setModel(new DefaultComboBoxModel<>(items));
+            majorBox.setEnabled(!majors.isEmpty());
+            showCourses();
+        }
+
+        /** Shows the selected major's courses, or hides the list if no major is picked. */
+        private void showCourses() {
+            courseModel.clear();
+            List<String> courses = majors.get((String) majorBox.getSelectedItem());
+            if (courses == null) {                      // "Select a major…"
+                courseScroll.setVisible(false);
+                courseCount.setText(majors.isEmpty() ? "No majors listed yet" : "");
+            } else {
+                for (String c : courses) if (c != null && !c.isBlank()) courseModel.addElement(c.trim());
+                int n = courseModel.size();
+                courseCount.setText(n + (n == 1 ? " course" : " courses"));
+                if (n == 0) courseModel.addElement("No courses listed yet");
+                courseScroll.setVisible(true);
+            }
+            revalidate();
+            repaint();
+            // Start each list at the top. Done after the layout pass; otherwise the old scroll position sticks.
+            SwingUtilities.invokeLater(() -> courseScroll.getViewport().setViewPosition(new Point(0, 0)));
         }
     }
 
@@ -312,6 +383,7 @@ add(contentPanel, BorderLayout.CENTER);
             LABELS.put("classsize", "Average Class Size");
             LABELS.put("campussize", "Campus Size");
             LABELS.put("airquality", "Air Quality");
+            LABELS.put("cost", "Cost of Attendance (per year)");
             LABELS.put("commuterperc", "Residents vs. Commuters");
             LABELS.put("genderperc", "Gender");
             LABELS.put("raceperc", "Race / Ethnicity");
@@ -320,10 +392,13 @@ add(contentPanel, BorderLayout.CENTER);
         }
 
         static String toHtml(Campus campus) {
+            return toHtml(campus, load(campus.className));
+        }
+
+        static String toHtml(Campus campus, Object data) {
             StringBuilder sb = new StringBuilder();
             sb.append("<html><body style='font-family:SansSerif; font-size:13pt; color:#222'>");
 
-            Object data = load(campus.className);
             if (data == null) {
                 sb.append("<h2>No information yet</h2>")
                   .append("<p>There is no data file for this school yet. Add a <b>")
@@ -347,6 +422,7 @@ add(contentPanel, BorderLayout.CENTER);
             for (String k : getters.keySet()) if (!order.contains(k)) order.add(k);
 
             for (String key : order) {
+                if (key.equals("majors") || key.equals("courses")) continue;  // shown in the dropdown instead
                 Method m = getters.get(key);
                 Object value;
                 try {
@@ -361,8 +437,30 @@ add(contentPanel, BorderLayout.CENTER);
             return sb.append("</body></html>").toString();
         }
 
+        /** A school's majors -> course lists, from getMajors(); empty if it has none. */
+        static Map<String, List<String>> majors(Object data) {
+            Map<String, List<String>> result = new LinkedHashMap<>();
+            if (data == null) return result;
+            try {
+                Object m = data.getClass().getMethod("getMajors").invoke(data);
+                if (m instanceof Map) {
+                    for (Map.Entry<?, ?> e : ((Map<?, ?>) m).entrySet()) {
+                        if (!(e.getValue() instanceof List)) continue;
+                        List<String> courses = new ArrayList<>();
+                        for (Object o : (List<?>) e.getValue()) courses.add(String.valueOf(o));
+                        result.put(String.valueOf(e.getKey()), courses);
+                    }
+                }
+            } catch (NoSuchMethodException ignored) {
+                // school has no majors yet
+            } catch (Exception ex) {
+                System.err.println("Couldn't read majors: " + ex);
+            }
+            return result;
+        }
+
         /** Creates an instance of the school's class, or null if it doesn't exist. */
-        private static Object load(String className) {
+        static Object load(String className) {
             if (className == null) return null;
             try {
                 return Class.forName(className).getDeclaredConstructor().newInstance();
@@ -378,25 +476,6 @@ add(contentPanel, BorderLayout.CENTER);
     String na = "<p style='color:#888; margin-top:0'><i>Not available yet</i></p>";
 
     if (value == null) return na;
-
-    if (key.equals("majors") && value instanceof Map) {
-        Map<String, ArrayList<String>> majors =
-                (Map<String, ArrayList<String>>) value;
-
-        StringBuilder sb = new StringBuilder();
-
-        for (String major : majors.keySet()) {
-            ArrayList<String> courses = majors.get(major);
-            String courseList = CSVReader.toList(courses);
-
-            sb.append("<h4>").append(esc(major)).append("</h4>");
-            sb.append("<pre style='font-family:SansSerif'>");
-            sb.append(esc(courseList));
-            sb.append("</pre>");
-        }
-
-        return sb.toString();
-    }
 
     if (value instanceof Collection) {
         Collection<?> c = (Collection<?>) value;

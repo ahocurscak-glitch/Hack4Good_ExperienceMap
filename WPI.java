@@ -13,7 +13,7 @@ public class WPI {
 
     public WPI(){
         majors.put("Computer Science", CSVReader.ReadCSV("WPICourses.csv"));
-        majors.put("Business", CSVReader.ReadCSV("WPI Business Courses.csv"));
+        majors.put("Business", CSVReader.ReadCSV("WPI Business.csv"));
     }
 
     public Map<String, ArrayList<String>> getMajors() {
